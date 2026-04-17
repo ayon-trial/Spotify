@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>The Weeknd</title>
+
+<style>
+body {
+background-color: #121212;
+color: white;
+font-family: Arial;
+margin: 0;
+}
+
+/* MENU */
+#menu {
+width: 200px;
+height: 100vh;
+float: left;
+background-color: black;
+padding-left: 15px;
+padding-top: 10px;
+}
+
+/* LOGO LINK */
+#logo {
+color: #1DB954;
+text-decoration: none;
+}
+
+/* SEARCH */
+#search {
+width: 170px;
+height: 32px;
+background-color: #181818;
+border: 1px solid #333;
+color: white;
+padding-left: 12px;
+border-radius: 20px;
+outline: none;
+margin-top: 10px;
+transition: 0.3s;
+}
+
+#search:focus {
+border: 1px solid #1DB954;
+box-shadow: 0 0 8px #1DB954;
+}
+
+/* CONTENT */
+#conteudo {
+margin-left: 220px;
+padding: 20px;
+}
+
+/* HEADER */
+#album-header {
+display: flex;
+align-items: center;
+gap: 20px;
+}
+
+#album-header img {
+width: 150px;
+border-radius: 10px;
+}
+
+/* SONGS */
+.song {
+padding: 10px;
+border-bottom: 1px solid #333;
+cursor: pointer;
+}
+
+.song:hover {
+background-color: #282828;
+}
+
+.active {
+background-color: #1DB954;
+color: black;
+}
+
+/* PLAYER */
+#player {
+position: fixed;
+bottom: 0;
+left: 0;
+width: 100%;
+background: #181818;
+padding: 15px;
+text-align: center;
+}
+
+/* BUTTONS */
+#butao, #playBtn {
+background: #1DB954;
+border: none;
+color: white;
+padding: 8px 12px;
+border-radius: 20px;
+cursor: pointer;
+margin-right: 5px;
+}
+
+/* MUTE ICON */
+#muteBtn {
+background: none;
+border: none;
+color: white;
+font-size: 18px;
+cursor: pointer;
+}
+
+/* PROGRESS BAR */
+#progress {
+-webkit-appearance: none;
+appearance: none;
+width: 350px;
+height: 8px;
+border-radius: 10px;
+outline: none;
+cursor: pointer;
+background: #333;
+}
+
+/* VOLUME */
+#volume {
+-webkit-appearance: none;
+appearance: none;
+width: 150px;
+height: 6px;
+border-radius: 10px;
+outline: none;
+background: linear-gradient(to right, #888 0%, #333 0%);
+cursor: pointer;
+}
+
+/* THUMB */
+#progress::-webkit-slider-thumb,
+#volume::-webkit-slider-thumb {
+-webkit-appearance: none;
+width: 12px;
+height: 12px;
+border-radius: 50%;
+background: white;
+cursor: pointer;
+}
+
+/* CONTROLS */
+.controls {
+position: absolute;
+right: 120px;
+bottom: 20px;
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+#time {
+margin-left: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="menu">
+<a id="logo" href="index.html"><h2>Spotify</h2></a>
+<input type="text" id="search" placeholder="Search...">
+</div>
+
+<div id="conteudo">
+
+<div id="album-header">
+<img src="Images/the weeknd.jpg">
+<div>
+<h1>The Weeknd</h1>
+<p>Artist • Playlist</p>
+</div>
+</div>
+
+<br/>
+
+<div class="song" onclick="playSong(0)">1. Blinding Lights</div>
+<div class="song" onclick="playSong(1)">2. Starboy</div>
+<div class="song" onclick="playSong(2)">3. Save Your Tears</div>
+<div class="song" onclick="playSong(3)">4. The Hills</div>
+<div class="song" onclick="playSong(4)">5. Often</div>
+
+</div>
+
+<div id="player">
+
+Now Playing: <span id="nowPlaying">None</span>
+
+<br/><br/>
+
+<input type="range" id="progress" value="0" disabled>
+<span id="time">0:00 / 0:00</span>
+
+<br/><br/>
+
+<button id="butao" onclick="prevSong()">⏮</button>
+<button id="playBtn" onclick="togglePlay()" disabled>▶</button>
+<button id="butao" onclick="nextSong()">⏭</button>
+
+<div class="controls">
+    <button id="muteBtn" onclick="toggleMute()">🔊</button>
+    <input type="range" id="volume" min="0" max="1" step="0.01" value="1">
+</div>
+
+</div>
+
+<audio id="audio"></audio>
+
+<script>
+let audio = document.getElementById("audio");
+let nowPlaying = document.getElementById("nowPlaying");
+let progress = document.getElementById("progress");
+let volume = document.getElementById("volume");
+let muteBtn = document.getElementById("muteBtn");
+let playBtn = document.getElementById("playBtn");
+let timeDisplay = document.getElementById("time");
+
+let songs = document.getElementsByClassName("song");
+
+let playlist = [
+"Audios/blinding lights.mp3",
+"Audios/starboy.mp3",
+"Audios/save your tears.mp3",
+"Audios/the hills.mp3",
+"Audios/often.mp3"
+];
+
+let names = [
+"Blinding Lights",
+"Starboy",
+"Save Your Tears",
+"The Hills",
+"Often"
+];
+
+let currentSong = -1;
+
+/* ✅ SPOTIFY GREEN PROGRESS FIX */
+function updateBar(el) {
+let value = (el.value - el.min) / (el.max - el.min) * 100;
+
+if (el.id === "progress") {
+el.style.background = `linear-gradient(to right,
+#1DB954 0%,
+#1DB954 ${value}%,
+#333 ${value}%,
+#333 100%)`;
+} else {
+el.style.background = `linear-gradient(to right, #888 ${value}%, #333 ${value}%)`;
+}
+}
+
+/* PLAY SONG */
+function playSong(index) {
+currentSong = index;
+audio.src = playlist[index];
+audio.play();
+
+nowPlaying.innerText = names[index];
+
+progress.disabled = false;
+playBtn.disabled = false;
+
+for (let i = 0; i < songs.length; i++) {
+songs[i].classList.remove("active");
+}
+songs[index].classList.add("active");
+}
+
+function togglePlay() {
+audio.paused ? audio.play() : audio.pause();
+}
+
+function nextSong() {
+currentSong = (currentSong + 1) % playlist.length;
+playSong(currentSong);
+}
+
+function prevSong() {
+currentSong = (currentSong - 1 + playlist.length) % playlist.length;
+playSong(currentSong);
+}
+
+function toggleMute() {
+audio.muted = !audio.muted;
+muteBtn.innerText = audio.muted ? "🔇" : "🔊";
+}
+
+/* LIVE PROGRESS UPDATE */
+audio.ontimeupdate = function () {
+if (audio.duration) {
+let percent = (audio.currentTime / audio.duration) * 100;
+progress.value = percent;
+updateBar(progress);
+
+timeDisplay.innerText =
+Math.floor(audio.currentTime / 60) + ":" +
+String(Math.floor(audio.currentTime % 60)).padStart(2, "0") +
+" / " +
+Math.floor(audio.duration / 60) + ":" +
+String(Math.floor(audio.duration % 60)).padStart(2, "0");
+}
+};
+
+volume.oninput = function () {
+audio.volume = this.value;
+updateBar(this);
+};
+
+progress.oninput = function () {
+audio.currentTime = (progress.value / 100) * audio.duration;
+};
+
+updateBar(volume);
+updateBar(progress);
+
+audio.onplay = () => playBtn.innerText = "⏸";
+audio.onpause = () => playBtn.innerText = "▶";
+</script>
+
+</body>
+</html>

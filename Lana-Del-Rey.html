@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>The Weeknd</title>
+
+<style>
+
+body {
+background-color: #121212;
+color: white;
+font-family: Arial;
+}
+
+#menu {
+width: 200px;
+height: 600px;
+float: left;
+background-color: black;
+padding-left: 15px;
+padding-top: 10px;
+}
+
+#conteudo {
+width: 850px;
+height: 600px;
+margin-left: 220px;
+padding-left: 20px;
+}
+
+#album-header {
+display: flex;
+align-items: center;
+}
+
+#album-header img {
+width: 180px;
+margin-right: 20px;
+margin-top: 20px;
+border-radius: 10px;
+}
+
+.song {
+padding: 10px;
+border-bottom: 1px solid #333;
+cursor: pointer;
+transition: 0.3s;
+}
+
+.song:hover {
+background-color: #282828;
+}
+
+.active {
+background-color: #1DB954;
+}
+
+#player {
+width: 1060px;
+height: 140px;
+clear: both;
+background-color: #181818;
+padding-left: 20px;
+padding-top: 15px;
+}
+
+#butao {
+width: 60px;
+height: 30px;
+background-color: #1DB954;
+border: none;
+color: white;
+border-radius: 20px;
+}
+
+a {
+text-decoration: none;
+color: white;
+}
+
+#logo {
+color: #1DB954;
+}
+
+/* SEARCH BAR */
+#search {
+width: 170px;
+height: 32px;
+background-color: #181818;
+border: 1px solid #333;
+color: white;
+padding-left: 12px;
+border-radius: 20px;
+outline: none;
+transition: 0.3s;
+}
+
+#search::placeholder {
+color: #aaa;
+}
+
+#search:focus {
+border-color: #1DB954;
+box-shadow: 0px 0px 5px #1DB954;
+}
+
+
+/* smooth slider */
+#progress {
+width: 300px;
+appearance: none;
+height: 5px;
+background: #333;
+border-radius: 10px;
+outline: none;
+}
+
+#progress::-webkit-slider-thumb {
+appearance: none;
+width: 12px;
+height: 12px;
+background: #1DB954;
+border-radius: 50%;
+cursor: pointer;
+}
+
+/* ===== VISUAL FIX (ADDED ONLY) ===== */
+#playBtn, #butao {
+width: 60px;
+height: 30px;
+background-color: #1DB954;
+border: none;
+color: white;
+border-radius: 20px;
+cursor: pointer;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+font-size: 16px;
+transition: 0.2s;
+}
+
+#playBtn:hover, #butao:hover {
+background-color: #1ed760;
+}
+/* =================================== */
+
+</style>
+</head>
+
+<body>
+
+<div id="menu">
+<h2 id="logo"><a href="index.html" id="logo">Spotify</a></h2>
+
+<br/>
+
+<input type="text" id="search" placeholder="Search...">
+
+</div>
+
+<div id="conteudo">
+
+<div id="album-header">
+<img src="Images/lana del rey.jpg" style="width:150px;">
+
+<div>
+<h1>Lana Del Rey</h1>
+<p>Artist • Album</p>
+</div>
+</div>
+
+<br/>
+
+<div class="song" onclick="playSong(0)">1. Doin Time</div>
+<div class="song" onclick="playSong(1)">2. Say Yes To Heaven</div>
+<div class="song" onclick="playSong(2)">3. Cinnamon Girl</div>
+<div class="song" onclick="playSong(3)">4. Sad Girl</div>
+<div class="song" onclick="playSong(4)">5. Summertime Sadness</div>
+
+</div>
+
+<div id="player">
+
+Now Playing: <span id="nowPlaying">None</span>
+
+<br/><br/>
+
+<input type="range" id="progress" value="0" disabled>
+<span id="time">0:00 / 0:00</span>
+
+<br/><br/>
+
+<button id="butao" onclick="prevSong()">⏮</button>
+<button id="playBtn" onclick="togglePlay()" disabled>▶</button>
+<button id="butao" onclick="nextSong()">⏭</button>
+
+&nbsp;&nbsp;
+
+Volume:
+<input type="range" id="volume" min="0" max="1" step="0.1" value="1">
+
+</div>
+
+<audio id="audio"></audio>
+
+<script>
+
+let audio = document.getElementById("audio");
+let nowPlaying = document.getElementById("nowPlaying");
+let progress = document.getElementById("progress");
+let volume = document.getElementById("volume");
+let songs = document.getElementsByClassName("song");
+let playBtn = document.getElementById("playBtn");
+let timeDisplay = document.getElementById("time");
+
+let playlist = [
+{file: "Audios/doin time.mp3", name: "Doin Time"},
+{file: "Audios/say yes to heaven.mp3", name: "Say Yes To Heaven"},
+{file: "Audios/cinnamon girl.mp3", name: "Cinnamon Girl"},
+{file: "Audios/sad girl.mp3", name: "Sad Girl"},
+{file: "Audios/summertime sadness.mp3", name: "Summertime Sadness"}
+];
+
+let currentSong = -1;
+
+function formatTime(sec) {
+let m = Math.floor(sec / 60);
+let s = Math.floor(sec % 60);
+if (s < 10) s = "0" + s;
+return m + ":" + s;
+}
+
+function playSong(index) {
+currentSong = index;
+audio.src = playlist[index].file;
+audio.play();
+nowPlaying.innerText = playlist[index].name;
+
+progress.disabled = false;
+playBtn.disabled = false;
+
+for (let i = 0; i < songs.length; i++) {
+songs[i].classList.remove("active");
+}
+songs[index].classList.add("active");
+}
+
+function togglePlay() {
+if (currentSong === -1) return;
+
+if (audio.paused) {
+audio.play();
+} else {
+audio.pause();
+}
+}
+
+function nextSong() {
+if (currentSong === -1) return;
+currentSong = (currentSong + 1) % playlist.length;
+playSong(currentSong);
+}
+
+function prevSong() {
+if (currentSong === -1) return;
+currentSong = (currentSong - 1 + playlist.length) % playlist.length;
+playSong(currentSong);
+}
+
+audio.ontimeupdate = function() {
+if (audio.duration) {
+progress.value = (audio.currentTime / audio.duration) * 100;
+timeDisplay.innerText = formatTime(audio.currentTime) + " / " + formatTime(audio.duration);
+}
+};
+
+progress.oninput = function() {
+if (audio.duration) {
+audio.currentTime = (progress.value / 100) * audio.duration;
+}
+};
+
+volume.oninput = function() {
+audio.volume = volume.value;
+};
+
+audio.onplay = function() {
+playBtn.innerText = "⏸";
+};
+
+audio.onpause = function() {
+playBtn.innerText = "▶";
+};
+
+audio.onended = function() {
+nextSong();
+};
+
+</script>
+
+</body>
+</html>
