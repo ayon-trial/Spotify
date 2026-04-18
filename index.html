@@ -3,6 +3,8 @@
 <head>
 <title>Music</title>
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 body {
 background-color: #121212;
@@ -45,7 +47,7 @@ outline: none;
 transition: 0.3s;
 }
 
-/* ✅ GREEN EFFECT ON CLICK */
+/* GREEN EFFECT */
 #search:focus {
 border: 1px solid #1DB954;
 box-shadow: 0 0 8px #1DB954;
@@ -127,6 +129,51 @@ a {
 text-decoration: none;
 color: white;
 }
+
+/* ===== MOBILE FIX ONLY ===== */
+@media (max-width: 768px) {
+
+body {
+flex-direction: column;
+}
+
+#menu {
+width: 100%;
+height: auto;
+position: relative;
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+
+#search {
+width: 120px;
+height: 30px;
+}
+
+#conteudo {
+margin-left: 0;
+width: 100%;
+padding: 15px;
+}
+
+.grid {
+gap: 12px;
+}
+
+.album {
+min-width: 140px;
+width: 140px;
+padding: 10px;
+}
+
+.album img {
+height: 120px;
+}
+
+}
+/* ============================ */
+
 </style>
 </head>
 
