@@ -35,6 +35,10 @@ margin-bottom: 25px;
 }
 
 /* SEARCH */
+.search-box {
+position: relative;
+}
+
 #search {
 width: 180px;
 height: 34px;
@@ -47,10 +51,35 @@ outline: none;
 transition: 0.3s;
 }
 
-/* GREEN EFFECT */
 #search:focus {
 border: 1px solid #1DB954;
 box-shadow: 0 0 8px #1DB954;
+}
+
+/* 🔍 SUGGESTIONS (FIXED PROPERLY) */
+#suggestions {
+position: absolute;
+top: 100%;
+left: 0;
+width: 100%;
+margin-top: 6px;
+background: #181818;
+border-radius: 10px;
+overflow: hidden;
+display: none;
+z-index: 1000;
+box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.suggestion {
+padding: 10px;
+cursor: pointer;
+transition: 0.2s;
+}
+
+.suggestion:hover {
+background: #282828;
+color: #1DB954;
 }
 
 /* MAIN */
@@ -91,7 +120,7 @@ width: 180px;
 background-color: #181818;
 border-radius: 12px;
 padding: 12px;
-transition: 0.3s;
+transition: 0.3s, opacity 0.3s, transform 0.3s;
 cursor: pointer;
 text-align: center;
 flex: 0 0 auto;
@@ -100,6 +129,13 @@ flex: 0 0 auto;
 .album:hover {
 background-color: #282828;
 transform: translateY(-5px);
+}
+
+/* 🎬 ANIMATION */
+.album.hide {
+opacity: 0;
+transform: scale(0.8);
+pointer-events: none;
 }
 
 /* IMAGE */
@@ -130,7 +166,7 @@ text-decoration: none;
 color: white;
 }
 
-/* ===== MOBILE FIX ONLY ===== */
+/* MOBILE */
 @media (max-width: 768px) {
 
 body {
@@ -172,7 +208,6 @@ height: 120px;
 }
 
 }
-/* ============================ */
 
 </style>
 </head>
@@ -181,7 +216,12 @@ height: 120px;
 
 <div id="menu">
 <a id="logo" href="#">Spotify</a>
+
+<div class="search-box">
 <input type="text" id="search" placeholder="Search..." onkeyup="procurar()">
+<div id="suggestions"></div>
+</div>
+
 </div>
 
 <div id="conteudo">
@@ -233,15 +273,57 @@ height: 120px;
 </div>
 
 <script>
+
+let suggestions = document.getElementById("suggestions");
+
 function procurar() {
 let input = document.getElementById("search").value.toLowerCase();
 let cards = document.getElementsByClassName("album");
 
+suggestions.innerHTML = "";
+let count = 0;
+
 for (let card of cards) {
 let text = card.innerText.toLowerCase();
-card.style.display = text.includes(input) ? "block" : "none";
+
+/* 🎬 FILTER */
+if (text.includes(input)) {
+card.classList.remove("hide");
+
+/* 🔍 SUGGESTIONS */
+if (input && count < 5) {
+let div = document.createElement("div");
+div.className = "suggestion";
+
+/* GET NAME + IMAGE + LINK */
+let name = card.querySelector("b").innerText;
+let imgSrc = card.querySelector("img").src;
+let link = card.parentElement.href;
+
+/* BUILD UI (ICON + NAME) */
+div.innerHTML = `
+  <img src="${imgSrc}" style="width:22px;height:22px;border-radius:4px;margin-right:8px;vertical-align:middle;">
+  ${name}
+`;
+
+/* CLICK → OPEN PAGE */
+div.onclick = function () {
+window.location.href = link;
+};
+
+suggestions.appendChild(div);
+count++;
+}
+
+} else {
+card.classList.add("hide");
 }
 }
+
+/* SHOW / HIDE */
+suggestions.style.display = input ? "block" : "none";
+}
+
 </script>
 
 </body>
