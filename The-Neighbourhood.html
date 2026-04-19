@@ -1,87 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>The Weeknd</title>
+<title>The Neighbourhood</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-
 body {
 background-color: #121212;
 color: white;
 font-family: Arial;
+margin: 0;
 }
 
+/* MENU */
 #menu {
 width: 200px;
-height: 600px;
+height: 100vh;
 float: left;
 background-color: black;
 padding-left: 15px;
 padding-top: 10px;
 }
 
-#conteudo {
-width: 850px;
-height: 600px;
-margin-left: 220px;
-padding-left: 20px;
-}
-
-#album-header {
-display: flex;
-align-items: center;
-}
-
-#album-header img {
-width: 180px;
-margin-right: 20px;
-margin-top: 20px;
-border-radius: 10px;
-}
-
-.song {
-padding: 10px;
-border-bottom: 1px solid #333;
-cursor: pointer;
-transition: 0.3s;
-}
-
-.song:hover {
-background-color: #282828;
-}
-
-.active {
-background-color: #1DB954;
-}
-
-#player {
-width: 1060px;
-height: 140px;
-clear: both;
-background-color: #181818;
-padding-left: 20px;
-padding-top: 15px;
-}
-
-#butao {
-width: 60px;
-height: 30px;
-background-color: #1DB954;
-border: none;
-color: white;
-border-radius: 20px;
-}
-
-a {
-text-decoration: none;
-color: white;
-}
-
+/* LOGO LINK */
 #logo {
 color: #1DB954;
+text-decoration: none;
 }
 
-/* SEARCH BAR */
+/* SEARCH */
 #search {
 width: 170px;
 height: 32px;
@@ -91,58 +39,172 @@ color: white;
 padding-left: 12px;
 border-radius: 20px;
 outline: none;
+margin-top: 10px;
 transition: 0.3s;
 }
 
-#search::placeholder {
-color: #aaa;
-}
-
 #search:focus {
-border-color: #1DB954;
-box-shadow: 0px 0px 5px #1DB954;
+border: 1px solid #1DB954;
+box-shadow: 0 0 8px #1DB954;
 }
 
+/* CONTENT */
+#conteudo {
+margin-left: 220px;
+padding: 20px;
+}
 
-/* smooth slider */
-#progress {
-width: 300px;
-appearance: none;
-height: 5px;
-background: #333;
+/* HEADER */
+#album-header {
+display: flex;
+align-items: center;
+gap: 20px;
+}
+
+#album-header img {
+width: 150px;
 border-radius: 10px;
-outline: none;
 }
 
-#progress::-webkit-slider-thumb {
-appearance: none;
-width: 12px;
-height: 12px;
-background: #1DB954;
-border-radius: 50%;
+/* SONGS */
+.song {
+padding: 10px;
+border-bottom: 1px solid #333;
 cursor: pointer;
 }
 
-/* ===== VISUAL FIX (ADDED ONLY) ===== */
-#playBtn, #butao {
-width: 60px;
-height: 30px;
+.song:hover {
+background-color: #282828;
+}
+
+.active {
 background-color: #1DB954;
+color: black;
+}
+
+/* PLAYER */
+#player {
+position: fixed;
+bottom: 0;
+left: 0;
+width: 100%;
+background: #181818;
+padding: 15px;
+text-align: center;
+}
+
+/* BUTTONS */
+#butao, #playBtn {
+background: #1DB954;
 border: none;
 color: white;
+padding: 8px 12px;
 border-radius: 20px;
 cursor: pointer;
-display: inline-flex;
-align-items: center;
-justify-content: center;
-font-size: 16px;
-transition: 0.2s;
+margin-right: 5px;
 }
 
-#playBtn:hover, #butao:hover {
-background-color: #1ed760;
+/* MUTE ICON */
+#muteBtn {
+background: none;
+border: none;
+color: white;
+font-size: 18px;
+cursor: pointer;
 }
-/* =================================== */
+
+/* PROGRESS BAR */
+#progress {
+-webkit-appearance: none;
+appearance: none;
+width: 350px;
+height: 8px;
+border-radius: 10px;
+outline: none;
+cursor: pointer;
+background: #333;
+}
+
+/* VOLUME */
+#volume {
+-webkit-appearance: none;
+appearance: none;
+width: 150px;
+height: 6px;
+border-radius: 10px;
+outline: none;
+background: linear-gradient(to right, #888 0%, #333 0%);
+cursor: pointer;
+}
+
+/* THUMB */
+#progress::-webkit-slider-thumb,
+#volume::-webkit-slider-thumb {
+-webkit-appearance: none;
+width: 12px;
+height: 12px;
+border-radius: 50%;
+background: white;
+cursor: pointer;
+}
+
+/* CONTROLS */
+.controls {
+position: absolute;
+right: 120px;
+bottom: 20px;
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+#time {
+margin-left: 10px;
+}
+
+/* ===== MOBILE OPTIMIZATION ONLY ===== */
+@media (max-width: 768px) {
+
+#menu {
+width: 100%;
+height: auto;
+float: none;
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 10px;
+}
+
+#conteudo {
+margin-left: 0;
+padding: 15px;
+}
+
+#album-header {
+flex-direction: column;
+align-items: flex-start;
+}
+
+#album-header img {
+width: 120px;
+}
+
+#progress {
+width: 90%;
+}
+
+.controls {
+position: static;
+margin-top: 10px;
+justify-content: center;
+}
+
+#volume {
+width: 100px;
+}
+
+}
+/* ===================================== */
 
 </style>
 </head>
@@ -150,31 +212,26 @@ background-color: #1ed760;
 <body>
 
 <div id="menu">
-<h2 id="logo"><a href="index.html" id="logo">Spotify</a></h2>
-
-<br/>
-
+<a id="logo" href="index.html"><h2>Spotify</h2></a>
 <input type="text" id="search" placeholder="Search...">
-
 </div>
 
 <div id="conteudo">
 
 <div id="album-header">
-<img src="Images/the neighbourhood.jpg" style="width:150px;">
-
+<img src="Images/the neighbourhood.jpg">
 <div>
 <h1>The Neighbourhood</h1>
-<p>Artist • Album</p>
+<p>Artist • Playlist</p>
 </div>
 </div>
 
 <br/>
 
-<div class="song" onclick="playSong(0)">1. Sweather Weather</div>
-<div class="song" onclick="playSong(1)">2. Reflections</div>
+<div class="song" onclick="playSong(0)">1. Sweater Weather</div>
+<div class="song" onclick="playSong(1)">2. Reflection</div>
 <div class="song" onclick="playSong(2)">3. Softcore</div>
-<div class="song" onclick="playSong(3)">4. Daddy Issues</div>
+<div class="song" onclick="playSong(3)">4. Daddy Issue</div>
 <div class="song" onclick="playSong(4)">5. You Get Me So High</div>
 
 </div>
@@ -194,47 +251,64 @@ Now Playing: <span id="nowPlaying">None</span>
 <button id="playBtn" onclick="togglePlay()" disabled>▶</button>
 <button id="butao" onclick="nextSong()">⏭</button>
 
-&nbsp;&nbsp;
-
-Volume:
-<input type="range" id="volume" min="0" max="1" step="0.1" value="1">
+<div class="controls">
+<button id="muteBtn" onclick="toggleMute()">🔊</button>
+<input type="range" id="volume" min="0" max="1" step="0.01" value="1">
+</div>
 
 </div>
 
 <audio id="audio"></audio>
 
 <script>
-
 let audio = document.getElementById("audio");
 let nowPlaying = document.getElementById("nowPlaying");
 let progress = document.getElementById("progress");
 let volume = document.getElementById("volume");
-let songs = document.getElementsByClassName("song");
+let muteBtn = document.getElementById("muteBtn");
 let playBtn = document.getElementById("playBtn");
 let timeDisplay = document.getElementById("time");
 
+let songs = document.getElementsByClassName("song");
+
 let playlist = [
-{file: "Audios/sweather weather.mp3", name: "Sweather Weather"},
-{file: "Audios/reflections.mp3", name: "Reflections"},
-{file: "Audios/softcore.mp3", name: "Softcore"},
-{file: "Audios/daddy issues.mp3", name: "Daddy Issues"},
-{file: "Audios/you get me so high.mp3", name: "You Get Me So High"}
+"Audios/The Neighbourhood/sweater weather.mp3",
+"Audios/The Neighbourhood/reflection.mp3",
+"Audios/The Neighbourhood/softcore.mp3",
+"Audios/The Neighbourhood/daddy issue.mp3",
+"Audios/The Neighbourhood/you get me so high.mp3"
+];
+
+let names = [
+"Sweater Weather",
+"Reflection",
+"Softcore",
+"Daddy Issue",
+"You Get Me So High"
 ];
 
 let currentSong = -1;
 
-function formatTime(sec) {
-let m = Math.floor(sec / 60);
-let s = Math.floor(sec % 60);
-if (s < 10) s = "0" + s;
-return m + ":" + s;
+function updateBar(el) {
+let value = (el.value - el.min) / (el.max - el.min) * 100;
+
+if (el.id === "progress") {
+el.style.background = `linear-gradient(to right,
+#1DB954 0%,
+#1DB954 ${value}%,
+#333 ${value}%,
+#333 100%)`;
+} else {
+el.style.background = `linear-gradient(to right, #888 ${value}%, #333 ${value}%)`;
+}
 }
 
 function playSong(index) {
 currentSong = index;
-audio.src = playlist[index].file;
+audio.src = playlist[index];
 audio.play();
-nowPlaying.innerText = playlist[index].name;
+
+nowPlaying.innerText = names[index];
 
 progress.disabled = false;
 playBtn.disabled = false;
@@ -246,56 +320,53 @@ songs[index].classList.add("active");
 }
 
 function togglePlay() {
-if (currentSong === -1) return;
-
-if (audio.paused) {
-audio.play();
-} else {
-audio.pause();
-}
+audio.paused ? audio.play() : audio.pause();
 }
 
 function nextSong() {
-if (currentSong === -1) return;
 currentSong = (currentSong + 1) % playlist.length;
 playSong(currentSong);
 }
 
 function prevSong() {
-if (currentSong === -1) return;
 currentSong = (currentSong - 1 + playlist.length) % playlist.length;
 playSong(currentSong);
 }
 
-audio.ontimeupdate = function() {
+function toggleMute() {
+audio.muted = !audio.muted;
+muteBtn.innerText = audio.muted ? "🔇" : "🔊";
+}
+
+audio.ontimeupdate = function () {
 if (audio.duration) {
-progress.value = (audio.currentTime / audio.duration) * 100;
-timeDisplay.innerText = formatTime(audio.currentTime) + " / " + formatTime(audio.duration);
+let percent = (audio.currentTime / audio.duration) * 100;
+progress.value = percent;
+updateBar(progress);
+
+timeDisplay.innerText =
+Math.floor(audio.currentTime / 60) + ":" +
+String(Math.floor(audio.currentTime % 60)).padStart(2, "0") +
+" / " +
+Math.floor(audio.duration / 60) + ":" +
+String(Math.floor(audio.duration % 60)).padStart(2, "0");
 }
 };
 
-progress.oninput = function() {
-if (audio.duration) {
+volume.oninput = function () {
+audio.volume = this.value;
+updateBar(this);
+};
+
+progress.oninput = function () {
 audio.currentTime = (progress.value / 100) * audio.duration;
-}
 };
 
-volume.oninput = function() {
-audio.volume = volume.value;
-};
+updateBar(volume);
+updateBar(progress);
 
-audio.onplay = function() {
-playBtn.innerText = "⏸";
-};
-
-audio.onpause = function() {
-playBtn.innerText = "▶";
-};
-
-audio.onended = function() {
-nextSong();
-};
-
+audio.onplay = () => playBtn.innerText = "⏸";
+audio.onpause = () => playBtn.innerText = "▶";
 </script>
 
 </body>
