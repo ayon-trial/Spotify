@@ -386,15 +386,6 @@ volume.oninput = function () {
 audio.volume = this.value;
 };
 
-// Add touch events for mobile devices
-volume.addEventListener('touchstart', function() {
-  audio.volume = volume.value;
-}, false);
-
-volume.addEventListener('touchend', function() {
-  audio.volume = volume.value;
-}, false);
-
 progress.oninput = function () {
 audio.currentTime = (progress.value / 100) * audio.duration;
 };
