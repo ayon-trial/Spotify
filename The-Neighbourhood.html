@@ -23,7 +23,6 @@ padding-left: 15px;
 padding-top: 10px;
 }
 
-/* LOGO LINK */
 #logo {
 color: #1DB954;
 text-decoration: none;
@@ -93,18 +92,55 @@ padding: 15px;
 text-align: center;
 }
 
-/* BUTTONS */
-#butao, #playBtn {
-background: #1DB954;
+/* SPOTIFY CONTROLS */
+.control-btn {
+background: none;
 border: none;
-color: white;
-padding: 8px 12px;
-border-radius: 20px;
 cursor: pointer;
-margin-right: 5px;
+margin: 0 6px;
+opacity: 0.8;
+transition: 0.2s;
 }
 
-/* MUTE ICON */
+.control-btn:hover {
+opacity: 1;
+transform: scale(1.1);
+}
+
+.control-btn svg {
+width: 20px;
+height: 20px;
+fill: white;
+}
+
+/* LOOP BUTTON */
+#loopBtn svg {
+fill: #888;
+}
+#loopBtn.active svg {
+fill: #1DB954;
+}
+
+/* PLAY BUTTON */
+#playBtn {
+background: #1DB954;
+border-radius: 50%;
+width: 40px;
+height: 40px;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+border: none;
+cursor: pointer;
+}
+
+#playBtn svg {
+fill: black;
+width: 18px;
+height: 18px;
+}
+
+/* MUTE */
 #muteBtn {
 background: none;
 border: none;
@@ -113,34 +149,28 @@ font-size: 18px;
 cursor: pointer;
 }
 
-/* PROGRESS BAR */
+/* PROGRESS */
 #progress {
--webkit-appearance: none;
 appearance: none;
 width: 350px;
 height: 8px;
 border-radius: 10px;
-outline: none;
-cursor: pointer;
 background: #333;
+cursor: pointer;
 }
 
-/* VOLUME */
 #volume {
--webkit-appearance: none;
 appearance: none;
 width: 150px;
 height: 6px;
 border-radius: 10px;
-outline: none;
-background: linear-gradient(to right, #888 0%, #333 0%);
+background: #333;
 cursor: pointer;
 }
 
-/* THUMB */
 #progress::-webkit-slider-thumb,
 #volume::-webkit-slider-thumb {
--webkit-appearance: none;
+appearance: none;
 width: 12px;
 height: 12px;
 border-radius: 50%;
@@ -162,7 +192,7 @@ gap: 8px;
 margin-left: 10px;
 }
 
-/* ===== MOBILE OPTIMIZATION ONLY ===== */
+/* MOBILE */
 @media (max-width: 768px) {
 
 #menu {
@@ -204,8 +234,6 @@ width: 100px;
 }
 
 }
-/* ===================================== */
-
 </style>
 </head>
 
@@ -247,9 +275,21 @@ Now Playing: <span id="nowPlaying">None</span>
 
 <br/><br/>
 
-<button id="butao" onclick="prevSong()">⏮</button>
-<button id="playBtn" onclick="togglePlay()" disabled>▶</button>
-<button id="butao" onclick="nextSong()">⏭</button>
+<button class="control-btn" onclick="prevSong()">
+<svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6L18 6v12z"/></svg>
+</button>
+
+<button id="playBtn" onclick="togglePlay()" disabled>
+<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+</button>
+
+<button class="control-btn" onclick="nextSong()">
+<svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zM6 6l8.5 6L6 18z"/></svg>
+</button>
+
+<button id="loopBtn" class="control-btn" onclick="toggleLoop()">
+<svg viewBox="0 0 24 24"><path d="M17 1l4 4-4 4V6H7v4H5V6a2 2 0 0 1 2-2h10V1zM7 23l-4-4 4-4v3h10v-4h2v4a2 2 0 0 1-2 2H7v3z"/></svg>
+</button>
 
 <div class="controls">
 <button id="muteBtn" onclick="toggleMute()">🔊</button>
@@ -267,6 +307,7 @@ let progress = document.getElementById("progress");
 let volume = document.getElementById("volume");
 let muteBtn = document.getElementById("muteBtn");
 let playBtn = document.getElementById("playBtn");
+let loopBtn = document.getElementById("loopBtn");
 let timeDisplay = document.getElementById("time");
 
 let songs = document.getElementsByClassName("song");
@@ -333,6 +374,11 @@ currentSong = (currentSong - 1 + playlist.length) % playlist.length;
 playSong(currentSong);
 }
 
+function toggleLoop() {
+audio.loop = !audio.loop;
+loopBtn.classList.toggle("active", audio.loop);
+}
+
 function toggleMute() {
 audio.muted = !audio.muted;
 muteBtn.innerText = audio.muted ? "🔇" : "🔊";
@@ -365,8 +411,13 @@ audio.currentTime = (progress.value / 100) * audio.duration;
 updateBar(volume);
 updateBar(progress);
 
-audio.onplay = () => playBtn.innerText = "⏸";
-audio.onpause = () => playBtn.innerText = "▶";
+audio.onplay = () => {
+playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
+};
+
+audio.onpause = () => {
+playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
+};
 </script>
 
 </body>
