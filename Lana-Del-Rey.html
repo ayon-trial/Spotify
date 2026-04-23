@@ -23,7 +23,6 @@ padding-left: 15px;
 padding-top: 10px;
 }
 
-/* LOGO */
 #logo {
 color: #1DB954;
 text-decoration: none;
@@ -71,6 +70,16 @@ border-radius: 10px;
 padding: 10px;
 border-bottom: 1px solid #333;
 cursor: pointer;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+.song img {
+width: 40px;
+height: 40px;
+object-fit: cover;
+border-radius: 6px;
 }
 
 .song:hover {
@@ -114,14 +123,15 @@ height: 20px;
 fill: white;
 }
 
+/* LOOP BUTTON */
 #loopBtn svg {
 fill: #888;
 }
-
 #loopBtn.active svg {
 fill: #1DB954;
 }
 
+/* PLAY BUTTON */
 #playBtn {
 background: #1DB954;
 border-radius: 50%;
@@ -234,7 +244,6 @@ width: 100px;
 }
 
 }
-
 </style>
 </head>
 
@@ -257,17 +266,18 @@ width: 100px;
 
 <br/>
 
-<div class="song" onclick="playSong(0)">1. Doin Time</div>
-<div class="song" onclick="playSong(1)">2. Say Yes To Heaven</div>
-<div class="song" onclick="playSong(2)">3. Cinnamon Girl</div>
-<div class="song" onclick="playSong(3)">4. Sad Girl</div>
-<div class="song" onclick="playSong(4)">5. Diet Mountain Dew</div>
-<div class="song" onclick="playSong(5)">6. Born to Die</div>
-<div class="song" onclick="playSong(6)">7. Brookyln Baby</div>
-<div class="song" onclick="playSong(7)">8. Salvatore</div>
-<div class="song" onclick="playSong(8)">9. Video games</div>
-<div class="song" onclick="playSong(9)">10. West Coast</div>
-<div class="song" onclick="playSong(10)">12. Young And Beautiful</div>
+<div class="song" onclick="playSong(0)"><img src="Audios/Lana Del Rey/doin time.jpg">Doin Time</div>
+<div class="song" onclick="playSong(1)"><img src="Audios/Lana Del Rey/say yes to heaven.jpg">Say Yes To Heaven</div>
+<div class="song" onclick="playSong(2)"><img src="Audios/Lana Del Rey/cinnamon girl.jpg">Cinnamon Girl</div>
+<div class="song" onclick="playSong(3)"><img src="Audios/Lana Del Rey/sad girl.jpg">Sad Girl</div>
+<div class="song" onclick="playSong(4)"><img src="Audios/Lana Del Rey/summertime sadness.png">Summertime Sadness</div>
+<div class="song" onclick="playSong(5)"><img src="Audios/Lana Del Rey/diet mountain dew.jpg">Diet Mountain Dew</div>
+<div class="song" onclick="playSong(6)"><img src="Audios/Lana Del Rey/born to die.jpg">Born To Die</div>
+<div class="song" onclick="playSong(7)"><img src="Audios/Lana Del Rey/brooklyn baby.jpg">Brooklyn Baby</div>
+<div class="song" onclick="playSong(8)"><img src="Audios/Lana Del Rey/salvatore.jpg">Salvatore</div>
+<div class="song" onclick="playSong(9)"><img src="Audios/Lana Del Rey/video games.png">Video Games</div>
+<div class="song" onclick="playSong(10)"><img src="Audios/Lana Del Rey/west coast.jpg">West Coast</div>
+<div class="song" onclick="playSong(11)"><img src="Audios/Lana Del Rey/young and beautiful.jpg">Young And Beautiful</div>
 
 </div>
 
@@ -282,7 +292,6 @@ Now Playing: <span id="nowPlaying">None</span>
 
 <br/><br/>
 
-<!-- CONTROLS -->
 <button class="control-btn" onclick="prevSong()">
 <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6L18 6v12z"/></svg>
 </button>
@@ -326,13 +335,13 @@ let playlist = [
 "Audios/Lana Del Rey/cinnamon girl.mp3",
 "Audios/Lana Del Rey/sad girl.mp3",
 "Audios/Lana Del Rey/summertime sadness.mp3",
-"Audios/Lana Del Rey/Diet Mountain Dew.mp3",
-"Audios/Lana Del Rey/Born To Die.mp3",
-"Audios/Lana Del Rey/Brooklyn Baby.mp3",
-"Audios/Lana Del Rey/Salvatore.mp3",
-"Audios/Lana Del Rey/Video Games.mp3",
-"Audios/Lana Del Rey/West Coast.mp3",
-"Audios/Lana Del Rey/Young And Beautiful.mp3"
+"Audios/Lana Del Rey/diet mountain dew.mp3",
+"Audios/Lana Del Rey/born to die.mp3",
+"Audios/Lana Del Rey/brooklyn baby.mp3",
+"Audios/Lana Del Rey/salvatore.mp3",
+"Audios/Lana Del Rey/video games.mp3",
+"Audios/Lana Del Rey/west coast.mp3",
+"Audios/Lana Del Rey/young and beautiful.mp3"
 ];
 
 let names = [
@@ -347,16 +356,32 @@ let names = [
 "Salvatore",
 "Video Games",
 "West Coast",
-"Young And Beautiful"
+"Young And Beautiful"   
 ];
 
 let currentSong = -1;
+
+function updateBar(el) {
+let value = (el.value - el.min) / (el.max - el.min) * 100;
+
+if (el.id === "progress") {
+el.style.background = `linear-gradient(to right,
+#1DB954 0%,
+#1DB954 ${value}%,
+#333 ${value}%,
+#333 100%)`;
+} else {
+el.style.background = `linear-gradient(to right, #888 ${value}%, #333 ${value}%)`;
+}
+}
 
 function playSong(index) {
 currentSong = index;
 audio.src = playlist[index];
 audio.play();
+
 nowPlaying.innerText = names[index];
+
 progress.disabled = false;
 playBtn.disabled = false;
 
@@ -392,7 +417,10 @@ muteBtn.innerText = audio.muted ? "🔇" : "🔊";
 
 audio.ontimeupdate = function () {
 if (audio.duration) {
-progress.value = (audio.currentTime / audio.duration) * 100;
+let percent = (audio.currentTime / audio.duration) * 100;
+progress.value = percent;
+updateBar(progress);
+
 timeDisplay.innerText =
 Math.floor(audio.currentTime / 60) + ":" +
 String(Math.floor(audio.currentTime % 60)).padStart(2, "0") +
@@ -404,10 +432,21 @@ String(Math.floor(audio.duration % 60)).padStart(2, "0");
 
 volume.oninput = function () {
 audio.volume = this.value;
+updateBar(this);
 };
 
 progress.oninput = function () {
 audio.currentTime = (progress.value / 100) * audio.duration;
+};
+
+updateBar(volume);
+updateBar(progress);
+
+/* AUTO PLAY NEXT SONG */
+audio.onended = function () {
+if (!audio.loop) {
+nextSong();
+}
 };
 
 audio.onplay = () => {
