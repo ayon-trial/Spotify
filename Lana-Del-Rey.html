@@ -51,6 +51,7 @@ box-shadow: 0 0 8px #1DB954;
 #conteudo {
 margin-left: 220px;
 padding: 20px;
+padding-bottom: 200px;
 }
 
 /* HEADER */
@@ -266,6 +267,7 @@ width: 100px;
 
 <br/>
 
+<div id="song-list">
 <div class="song" onclick="playSong(0)"><img src="Audios/Lana Del Rey/doin time.jpg">Doin Time</div>
 <div class="song" onclick="playSong(1)"><img src="Audios/Lana Del Rey/say yes to heaven.jpg">Say Yes To Heaven</div>
 <div class="song" onclick="playSong(2)"><img src="Audios/Lana Del Rey/cinnamon girl.jpg">Cinnamon Girl</div>
@@ -278,6 +280,7 @@ width: 100px;
 <div class="song" onclick="playSong(9)"><img src="Audios/Lana Del Rey/video games.png">Video Games</div>
 <div class="song" onclick="playSong(10)"><img src="Audios/Lana Del Rey/west coast.jpg">West Coast</div>
 <div class="song" onclick="playSong(11)"><img src="Audios/Lana Del Rey/young and beautiful.jpg">Young And Beautiful</div>
+</div>
 
 </div>
 
@@ -445,7 +448,11 @@ updateBar(progress);
 /* AUTO PLAY NEXT SONG */
 audio.onended = function () {
 if (!audio.loop) {
+if (currentSong < playlist.length - 1) {
 nextSong();
+} else {
+window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
+}
 }
 };
 
