@@ -11,6 +11,7 @@ background-color: #121212;
 color: white;
 font-family: Arial;
 margin: 0;
+scroll-behavior: smooth;
 }
 
 /* MENU */
@@ -52,6 +53,7 @@ box-shadow: 0 0 8px #1DB954;
 #conteudo {
 margin-left: 220px;
 padding: 20px;
+padding-bottom: 200px;
 }
 
 /* HEADER */
@@ -71,10 +73,20 @@ border-radius: 10px;
 padding: 10px;
 border-bottom: 1px solid #333;
 cursor: pointer;
+display: flex;
+align-items: center;
+gap: 10px;
 }
 
 .song:hover {
 background-color: #282828;
+}
+
+.song-icon {
+width: 40px;
+height: 40px;
+object-fit: cover;
+border-radius: 6px;
 }
 
 .active {
@@ -208,6 +220,7 @@ padding: 10px;
 #conteudo {
 margin-left: 0;
 padding: 15px;
+padding-bottom: 200px;
 }
 
 #album-header {
@@ -257,11 +270,21 @@ width: 100px;
 
 <br/>
 
-<div class="song" onclick="playSong(0)">1. Blinding Lights</div>
-<div class="song" onclick="playSong(1)">2. Starboy</div>
-<div class="song" onclick="playSong(2)">3. Save Your Tears</div>
-<div class="song" onclick="playSong(3)">4. The Hills</div>
-<div class="song" onclick="playSong(4)">5. Often</div>
+<div class="song" onclick="playSong(0)"><img src="Audios/The Weeknd/After Hours.jpg" class="song-icon">After Hours</div>
+<div class="song" onclick="playSong(1)"><img src="Audios/The Weeknd/Blinding Lights.png" class="song-icon">Blinding Lights</div>
+<div class="song" onclick="playSong(2)"><img src="Audios/The Weeknd/Call Out My Name.jpg" class="song-icon">Call Out My Name</div>
+<div class="song" onclick="playSong(3)"><img src="Audios/The Weeknd/Cry For Me.jpg" class="song-icon">Cry For Me</div>
+<div class="song" onclick="playSong(4)"><img src="Audios/The Weeknd/Die For You.jpg" class="song-icon">Die For You</div>
+<div class="song" onclick="playSong(5)"><img src="Audios/The Weeknd/House Of Balloons.png" class="song-icon">House Of Balloons</div>
+<div class="song" onclick="playSong(6)"><img src="Audios/The Weeknd/I Was Never There.jpg" class="song-icon">I Was Never There</div>
+<div class="song" onclick="playSong(7)"><img src="Audios/The Weeknd/Often.jpg" class="song-icon">Often</div>
+<div class="song" onclick="playSong(8)"><img src="Audios/The Weeknd/One Of The Girls.jpg" class="song-icon">One Of The Girls</div>
+<div class="song" onclick="playSong(9)"><img src="Audios/The Weeknd/Popular.png" class="song-icon">Popular</div>
+<div class="song" onclick="playSong(10)"><img src="Audios/The Weeknd/Save Your Tears.jpg" class="song-icon">Save Your Tears</div>
+<div class="song" onclick="playSong(11)"><img src="Audios/The Weeknd/Starboy.jpg" class="song-icon">Starboy</div>
+<div class="song" onclick="playSong(12)"><img src="Audios/The Weeknd/Sao Paulo.jpg" class="song-icon">São Paulo</div>
+<div class="song" onclick="playSong(13)"><img src="Audios/The Weeknd/The Hills.jpg" class="song-icon">The Hills</div>
+<div class="song" onclick="playSong(14)"><img src="Audios/The Weeknd/Timeless.jpg" class="song-icon">Timeless</div>
 
 </div>
 
@@ -315,19 +338,39 @@ let timeDisplay = document.getElementById("time");
 let songs = document.getElementsByClassName("song");
 
 let playlist = [
+"Audios/The Weeknd/After Hours.mp3",
 "Audios/The Weeknd/blinding lights.mp3",
-"Audios/The Weeknd/starboy.mp3",
+"Audios/The Weeknd/Call Out My Name.mp3",
+"Audios/The Weeknd/Cry For Me.mp3",
+"Audios/The Weeknd/Die For You.mp3",
+"Audios/The Weeknd/House Of Balloons.mp3",
+"Audios/The Weeknd/I Was Never There.mp3",
+"Audios/The Weeknd/often.mp3",
+"Audios/The Weeknd/One Of The Girls.mp3",
+"Audios/The Weeknd/Popular.mp3",
 "Audios/The Weeknd/save your tears.mp3",
+"Audios/The Weeknd/starboy.mp3",
+"Audios/The Weeknd/São Paulo.mp3",
 "Audios/The Weeknd/the hills.mp3",
-"Audios/The Weeknd/often.mp3"
+"Audios/The Weeknd/Timeless.mp3"
 ];
 
 let names = [
+"After Hours",
 "Blinding Lights",
-"Starboy",
+"Call Out My Name",
+"Cry For Me",
+"Die For You",
+"House Of Balloons",
+"I Was Never There",
+"Often",
+"One Of The Girls",
+"Popular",
 "Save Your Tears",
+"Starboy",
+"São Paulo",
 "The Hills",
-"Often"
+"Timeless"
 ];
 
 let currentSong = -1;
